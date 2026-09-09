@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/style.css">
+    <title>Student List</title>
+</head>
+
+<body>
+
+    <h1>Student List</h1>
+
+    <a href="/students/new">Add New Student</a>
+
+    <hr>
+
+    <% if (students.length === 0) { %>
+
+        <p>No students registered yet.</p>
+
+    <% } else { %>
+
+        <% students.forEach(student => { %>
+
+            <div>
+                <h2>
+                    <%= student.name %>
+                </h2>
+
+                <p>
+                    Age: <%= student.age %>
+                </p>
+
+                <p>
+                    Course: <%= student.course %>
+                </p>
+
+                <p>
+                    Email: <%= student.email %>
+                </p>
+
+                <a href="/students/<%= student._id %>">
+                    View Details
+                </a>
+
+                |
+
+                <a href="/students/<%= student._id %>/edit">
+                    Edit
+                </a>
+
+                <form
+                    action="/students/<%= student._id %>/delete"
+                    method="POST"
+                    style="display:inline;"
+                >
+                    <button type="submit">
+                        Delete
+                    </button>
+                </form>
+
+            </div>
+
+            <hr>
+
+        <% }) %>
+
+    <% } %>
+
+</body>
+</html>
