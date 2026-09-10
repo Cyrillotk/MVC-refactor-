@@ -19,11 +19,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Routes
-app.use("/", studentRoutes);
+// Routes 
+//changed app.use("/", studentRoutes); to app.use("/students", studentRoutes); concerning the task 4.2
+app.use("/students", studentRoutes);
 
 
-// 404 handler
+
 app.use((req, res) => {
     res.status(404).render("error", {
         message: "Page not found."

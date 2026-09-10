@@ -1,4 +1,6 @@
-const express = require("express");
+const { sanitizeFilter } = require("mongoose");
+
+/*const express = require("express");
 
 const router = express.Router();
 
@@ -53,5 +55,36 @@ router.post(
     studentController.deleteStudent
 );
 
+
+module.exports = router;*/
+
+
+//Task 4.2
+
+const express = require("express");
+
+const router = express.Router();
+
+const studentController = require("../controllers/studentController");
+
+
+router.get("/", studentController.getStudents);
+
+
+router.get("/new", studentController.showNewStudentForm);
+
+
+router.get("/:id/edit", studentController.showEditStudentForm);
+
+// GET /students/:id
+router.get("/:id", studentController.getStudent);
+
+// POST /students
+router.post("/", studentController.createStudent);
+
+
+router.post("/:id/edit", studentController.updateStudent);
+
+router.post("/:id/delete", studentController.deleteStudent);
 
 module.exports = router;
