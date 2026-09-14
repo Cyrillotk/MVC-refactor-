@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Student = require("../models/Student");
 
-// GET /students
-exports.getStudents = async (req, res) => {
+// GET /students for task 4.3 error handling middleware
+exports.getStudents = async (req, res, next) => {
     try {
         const students = await Student.find().sort({ createdAt: -1 });
 
@@ -10,6 +10,7 @@ exports.getStudents = async (req, res) => {
             students
         });
     } catch (error) {
+        next(error); // added for task 4.3
         console.error("Error fetching students:", error);
         res.status(500).render("error", {
             message: "Unable to fetch students."
@@ -19,7 +20,7 @@ exports.getStudents = async (req, res) => {
 
 
 // GET /students/:id
-exports.getStudent = async (req, res) => {
+exports.getStudent = async (req, res, next) => {
     try {
         const { id } = req.params;
 
@@ -41,6 +42,7 @@ exports.getStudent = async (req, res) => {
             student
         });
     } catch (error) {
+        next(error);
         console.error("Error fetching student:", error);
 
         res.status(500).render("error", {
@@ -51,7 +53,7 @@ exports.getStudent = async (req, res) => {
 
 
 // POST /students
-exports.createStudent = async (req, res) => {
+exports.createStudent = async (req, res, next) => {
     try {
         const { name, age, course, email } = req.body;
 
@@ -70,6 +72,7 @@ exports.createStudent = async (req, res) => {
 
         res.redirect("/students");
     } catch (error) {
+        next(error); // added for task 4.3
         console.error("Error creating student:", error);
 
         res.status(500).render("error", {
@@ -80,7 +83,7 @@ exports.createStudent = async (req, res) => {
 
 
 // POST /students/:id/edit
-exports.updateStudent = async (req, res) => {
+exports.updateStudent = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { name, age, course, email } = req.body;
@@ -119,6 +122,7 @@ exports.updateStudent = async (req, res) => {
 
         res.redirect("/students");
     } catch (error) {
+        next(error); //added for task 4.3
         console.error("Error updating student:", error);
 
         res.status(500).render("error", {
@@ -129,7 +133,7 @@ exports.updateStudent = async (req, res) => {
 
 
 // POST /students/:id/delete
-exports.deleteStudent = async (req, res) => {
+exports.deleteStudent = async (req, res, next) => {
     try {
         const { id } = req.params;
 
@@ -149,6 +153,7 @@ exports.deleteStudent = async (req, res) => {
 
         res.redirect("/students");
     } catch (error) {
+        next(error); // added for task 4.3
         console.error("Error deleting student:", error);
 
         res.status(500).render("error", {
@@ -159,13 +164,13 @@ exports.deleteStudent = async (req, res) => {
 
 
 // GET /students/new
-exports.showNewStudentForm = (req, res) => {
+exports.showNewStudentForm = (req, res, next) => { //added next
     res.render("students/new");
 };
 
 
 // GET /students/:id/edit
-exports.showEditStudentForm = async (req, res) => {
+exports.showEditStudentForm = async (req, res, next) => {
     try {
         const { id } = req.params;
 
@@ -187,6 +192,7 @@ exports.showEditStudentForm = async (req, res) => {
             student
         });
     } catch (error) {
+        next(error); //added for task 4.3
         console.error("Error loading edit form:", error);
 
         res.status(500).render("error", {

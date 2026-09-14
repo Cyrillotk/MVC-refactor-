@@ -24,13 +24,22 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/students", studentRoutes);
 
 
-
-app.use((req, res) => {
-    res.status(404).render("error", {
-        message: "Page not found."
-    });
+// error handling middleware for task 4.3
+// 404 middleware
+app.use((req, res, next) => {
+    const error = new Error("Page not found.");
+    error.status = 404;
+    next(error);
 });
 
+// Central error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    res.status(err.status || 500).render("error", {
+        message: err.message || "Something went wrong."
+    });
+});
 
 // Database connection
 mongoose
